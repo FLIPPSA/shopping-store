@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'; // creates an App instance based on some config 
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -45,7 +45,6 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
       console.log('error creating the user', err);
     }
   }
-  
   return userDocRef;
 }
 
@@ -60,3 +59,7 @@ export const SignInAuthUserWithEmailAndPassword = async (email, password) => {
 
   return await signInWithEmailAndPassword(auth, email, password);
 }
+
+export const signOutUser = async () => await signOut(auth); // auth because it informs firebase which user
+
+export const onAuthStateChangeListener = (callback) => onAuthStateChanged(auth, callback);

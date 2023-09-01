@@ -1,15 +1,15 @@
-import { useState } from "react";
 import FormInput from "../form-input/form-input.component";
-import { signInWithGooglePopup, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
+import { signInWithGooglePopup } from "../../utils/firebase/firebase.utils";
 import Button from "../button/button.component";
 import { SignInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import './sign-in-form.styles.scss';
+import { useState } from "react";
 
 const defaultFormFields = {
   email: '',
   password: ''
 };
-
+ 
 const SignInForm = () => {
   const [ formFields, setFormFields ] = useState(defaultFormFields);
   const { email, password } = formFields;
@@ -17,8 +17,7 @@ const SignInForm = () => {
   const handleSignIn = async (event) => {
     event.preventDefault();
     try {
-      const user = await SignInAuthUserWithEmailAndPassword(email, password);
-      // resetFormField();
+      const { user } = await SignInAuthUserWithEmailAndPassword(email, password);
     } catch (err) {
       switch(err.code){
         case 'auth/wrong-password':
@@ -34,8 +33,7 @@ const SignInForm = () => {
   }
 
   const SignInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    const userDocRef = createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   }
   
   const handleChange = (event) => {
